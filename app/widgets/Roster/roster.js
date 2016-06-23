@@ -134,7 +134,6 @@
                 ls = $scope.lsGroupState.rosterGroup_Ungrouped;
                 g = "Ungrouped";
             }
-
             ls = !ls;
 
             $scope.lsGroupState["rosterGroup_" + g] = ls;
@@ -142,10 +141,12 @@
         };
 
         this.groupIsShown = function(grp){
-            if(typeof $scope.groups[grp] != "undefined"){
-                return $scope.groups[grp];
+            if(typeof $scope.lsGroupState["rosterGroup_" + grp] != "undefined"){
+                return $scope.lsGroupState["rosterGroup_" + grp];
             }
-            else return $scope.groups["Ungrouped"];
+            else{
+                return $scope.lsGroupState["rosterGroup_Ungrouped"];
+            }
         };
 
         this.getContactTitle = function(c){
