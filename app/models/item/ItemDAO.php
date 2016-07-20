@@ -2,7 +2,8 @@
 
 namespace modl;
 
-class ItemDAO extends SQL {
+class ItemDAO extends SQL
+{
     function set(Item $item, $insert_only = false) {
         if(!$insert_only) {
             $this->_sql = '
@@ -103,7 +104,10 @@ class ItemDAO extends SQL {
             from item
             left outer join caps on caps.node = item.server
             where item.node not like :node
-            and item.node != :name
+            and item.node != \'\'
+            and caps.category = \'pubsub\'
+            and caps.type = \'service\'
+            and item.node not like \'/%\'
             group by server, caps.name
             order by number desc';
 
@@ -111,8 +115,6 @@ class ItemDAO extends SQL {
             'Item',
             array(
                 'node' => 'urn:xmpp:microblog:0:comments%',
-                // Little hack here too
-                'name' => ''
             )
         );
 
@@ -136,7 +138,8 @@ class ItemDAO extends SQL {
                 as s on s.server = item.server
                 and s.node = item.node
             where item.server = :server
-              and item.node != \'\'
+                and item.node != \'\'
+                and item.node not like \'/%\'
             order by name, item.node
             ';
 
@@ -192,8 +195,7 @@ class ItemDAO extends SQL {
             select * from item
             left outer join caps on caps.node = item.jid
             where server = :server
-            and category = \'store\'
-            and type = \'file\'';
+            and features like \'%urn:xmpp:http:upload%\'';
 
         $this->prepare(
             'Item',
