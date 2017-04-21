@@ -37,7 +37,10 @@ class Session
 
         $this->clients = new \SplObjectStorage;
         $this->register($loop, $this);
-
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->path = "C:\php\php.exe"; // Don't forget to change php.exe path!
+            if (!file_exists($this->path)) {die("Path doesn't set!");}
+        }
         $this->timestamp = time();
     }
 
