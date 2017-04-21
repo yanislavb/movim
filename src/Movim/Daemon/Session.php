@@ -24,7 +24,7 @@ class Session
 
     private     $language;
     private     $offset;
-    protected   $path; // $path for development = "C:\php\php.exe"
+    protected   $path;
     public function __construct($loop, $sid, $baseuri, $language = false, $offset = 0, $verbose = false, $debug = false)
     {
         $this->sid     = $sid;
