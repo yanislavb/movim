@@ -24,7 +24,7 @@ class Session
 
     private     $language;
     private     $offset;
-
+    protected   $path; // $path for development = "C:\php\php.exe"
     public function __construct($loop, $sid, $baseuri, $language = false, $offset = 0, $verbose = false, $debug = false)
     {
         $this->sid     = $sid;
@@ -80,10 +80,10 @@ class Session
     private function register($loop, $me)
     {
         $buffer = '';
-
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') $command = $this->path." linker.php"; else $command = "exec php linker.php";
         // Launching the linker
         $this->process = new \React\ChildProcess\Process(
-                            'exec php linker.php ' . $this->sid,
+                            $command." ". $this->sid,
                             null,
                             [
                                 'sid'       => $this->sid,
